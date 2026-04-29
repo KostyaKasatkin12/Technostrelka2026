@@ -1,0 +1,39 @@
+VERDICT: REJECTED
+The documentation files were added, but `docs/BACKEND.md` contains multiple factual inaccuracies against the current codebase, so the task is not reliably complete.
+
+Critical findings:
+- **Auth/session model is incorrect**: doc clVERDICT: REJECTED
+aims `express-session`, signed `connect.sid`, and JWT-lThe documentation files were added, but `docs/BACKEND.md` contains multiple factual inaccuracies against the current codebase, so the task is not reliably complete.
+ike wording; actual implementation uses custom DB-backed sessio
+ns (`sessionsTable`) with cookie `morizo_sid` in `src/lib/authCritical findings:
+.ts`.
+- **Geodata section is inaccurate**: doc says checkpoint coordina- **Auth/session model is incorrect**: doc claims `express-session`, signed `connect.sid`, and JWT-like wording; actual implementation uses custom DB-backed sessions (`sessionsTable`) with cookie `morizo_sid` in `src/lib/auth.ts`.
+tes are `numeric(9,6)` and near-me uses JS Haversine with a specific fallback center. Schema uses `doublePrecision` (`lib/db/src/schema/index.ts`), and the documented near-me implementation/fallback does not match evident code paths (fallback constant in frontend is `56.3269, 44.0075`, not `44.0059`; no clear server-side near-me Haversine route).
+- **API endpoint details are partly incorrect**:
+  - Quests query params in docs (`district`, `difficulty`) don’t match route validation (`city`, `difficultyMin`, `difficultyMax`, `sort`, etc.) in `routes/quests.ts`.
+  - Chat docs list `/chat/channels/:id/invite` (not present) and miss existing `/chat/channels/:id/join` and `/chat/channels/:id/stream` in `routes/chat.ts`.
+  - Leaderboard limits are documented as top 20, but routes return up to 50.
+- **Validation/error conventions are overstated/wrong**: doc says standard error body is always `{ error: "..." }`, but many handlers return `{ error, message }` (e.g., `requireAuth/requireModerator`, global 404/500 normalizer patterns).
+
+`docs/QUEST_ANSWERS.md` is mostly solid and appears aligned with `seed.ts` for quest/checkpoint answers, but it uses **abbreviated task text** rather than full task text (requirement asked for task text), which is a minor gap compared to the backend doc issues.
+
+Security: none observed.
+
+Next actions:
+1. Rewrite `BACKEND.md` strictly from source (`routes/*.ts`, `lib/auth.ts`, schema), removing guessed behavior and correcting auth, params, limits, and error shapes.
+2. Re-validate endpoint tables route-by-route (method/path/auth/notes) against actual handlers.
+3. Update `QUEST_ANSWERS.md` task column to full checkpoint task text from `seed.ts` to fully satisfy the stated output contract.- **Geodata section is inaccurate**: doc says checkpoint coordinates are `numeric(9,6)` and near-me uses JS Haversine with a specific fallback center. Schema uses `doublePrecision` (`lib/db/src/schema/index.ts`), and the documented near-me implementation/fallback does not match evident code paths (fallback constant in frontend is `56.3269, 44.0075`, not `44.0059`; no clear server-side near-me Haversine route).
+- **API endpoint details are partly incorrect**:
+  - Quests query params in docs (`district`, `difficulty`) don’t match route validation (`city`, `difficultyMin`, `difficultyMax`, `sort`, etc.) in `routes/quests.ts`.
+  - Chat docs list `/chat/channels/:id/invite` (not present) and miss existing `/chat/channels/:id/join` and `/chat/channels/:id/stream` in `routes/chat.ts`.
+  - Leaderboard limits are documented as top 20, but routes return up to 50.
+- **Validation/error conventions are overstated/wrong**: doc says standard error body is always `{ error: "..." }`, but many handlers return `{ error, message }` (e.g., `requireAuth/requireModerator`, global 404/500 normalizer patterns).
+
+`docs/QUEST_ANSWERS.md` is mostly solid and appears aligned with `seed.ts` for quest/checkpoint answers, but it uses **abbreviated task text** rather than full task text (requirement asked for task text), which is a minor gap compared to the backend doc issues.
+
+Security: none observed.
+
+Next actions:
+1. Rewrite `BACKEND.md` strictly from source (`routes/*.ts`, `lib/auth.ts`, schema), removing guessed behavior and correcting auth, params, limits, and error shapes.
+2. Re-validate endpoint tables route-by-route (method/path/auth/notes) against actual handlers.
+3. Update `QUEST_ANSWERS.md` task column to full checkpoint task text from `seed.ts` to fully satisfy the stated output contract.

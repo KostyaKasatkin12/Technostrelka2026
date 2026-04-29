@@ -1,0 +1,1559 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: MORIZO API — городские квесты
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+  - name: auth
+  - name: quests
+  - name: checkpoints
+  - name: teams
+  - name: sessions
+  - name: leaderboard
+  - name: moderation
+  - name: stats
+  - name: profile
+  - name: admin
+  - name: ai
+  - name: chat
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/HealthStatus" }
+
+  # ---------- AUTH ----------
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/RegisterBody" }
+      responses:
+        "200":
+          description: User created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AuthResponse" }
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Log in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/LoginBody" }
+      responses:
+        "200":
+          description: Logged in
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AuthResponse" }
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Log out
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/OkResponse" }
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user
+      responses:
+        "200":
+          description: Current user (or null if not logged in)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/MeResponse" }
+
+  # ---------- QUESTS ----------
+  /quests:
+    get:
+      operationId: listQuests
+      tags: [quests]
+      summary: List published quests with filters
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer, minimum: 1, default: 1 }
+        - in: query
+          name: city
+          schema: { type: string }
+        - in: query
+          name: difficultyMin
+          schema: { type: integer, minimum: 1, maximum: 5 }
+        - in: query
+          name: difficultyMax
+          schema: { type: integer, minimum: 1, maximum: 5 }
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: nearLat
+          schema: { type: number }
+        - in: query
+          name: nearLng
+          schema: { type: number }
+        - in: query
+          name: radiusKm
+          schema: { type: number }
+        - in: query
+          name: sort
+          schema: { type: string, enum: [recent, popular, rating] }
+        - in: query
+          name: bestTravelMode
+          schema: { type: string, enum: [foot, transport, public_transport, dirt_road, off_road] }
+      responses:
+        "200":
+          description: Paginated quests
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/QuestListResponse" }
+    post:
+      operationId: createQuest
+      tags: [quests]
+      summary: Create quest (draft)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreateQuestBody" }
+      responses:
+        "200":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Quest" }
+
+  /quests/mine:
+    get:
+      operationId: listMyQuests
+      tags: [quests]
+      summary: Quests created by current user (any status)
+      responses:
+        "200":
+          description: List
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Quest" }
+
+  /quests/{id}:
+    get:
+      operationId: getQuest
+      tags: [quests]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Quest detail (with checkpoints + author)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/QuestDetail" }
+    patch:
+      operationId: updateQuest
+      tags: [quests]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UpdateQuestBody" }
+      responses:
+        "200":
+          description: Updated quest
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Quest" }
+
+  /quests/{id}/submit:
+    post:
+      operationId: submitQuest
+      tags: [quests]
+      summary: Submit draft for moderation
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Updated quest
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Quest" }
+
+  /quests/{id}/sessions:
+    get:
+      operationId: getQuestSessions
+      tags: [quests]
+      summary: Completion stats and recent runs for a quest
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 20, default: 5 }
+      responses:
+        "200":
+          description: Quest sessions stats
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/QuestSessionsStats" }
+
+  /quests/{id}/archive:
+    post:
+      operationId: archiveQuest
+      tags: [quests]
+      summary: Archive published quest
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Updated quest
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Quest" }
+
+  # ---------- CHECKPOINTS ----------
+  /quests/{id}/checkpoints:
+    get:
+      operationId: listCheckpoints
+      tags: [checkpoints]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Checkpoints of a quest
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Checkpoint" }
+    post:
+      operationId: createCheckpoint
+      tags: [checkpoints]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreateCheckpointBody" }
+      responses:
+        "200":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Checkpoint" }
+
+  /checkpoints/{checkpointId}:
+    patch:
+      operationId: updateCheckpoint
+      tags: [checkpoints]
+      parameters:
+        - in: path
+          name: checkpointId
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UpdateCheckpointBody" }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Checkpoint" }
+    delete:
+      operationId: deleteCheckpoint
+      tags: [checkpoints]
+      parameters:
+        - in: path
+          name: checkpointId
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/OkResponse" }
+
+  # ---------- TEAMS ----------
+  /teams:
+    get:
+      operationId: listTeams
+      tags: [teams]
+      responses:
+        "200":
+          description: All public teams
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Team" }
+    post:
+      operationId: createTeam
+      tags: [teams]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreateTeamBody" }
+      responses:
+        "200":
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Team" }
+
+  /teams/mine:
+    get:
+      operationId: listMyTeams
+      tags: [teams]
+      responses:
+        "200":
+          description: Teams the current user is in
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Team" }
+
+  /teams/{id}:
+    get:
+      operationId: getTeam
+      tags: [teams]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Team detail
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/TeamDetail" }
+
+  /teams/join:
+    post:
+      operationId: joinTeam
+      tags: [teams]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/JoinTeamBody" }
+      responses:
+        "200":
+          description: Joined
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Team" }
+
+  # ---------- SESSIONS (passing) ----------
+  /sessions/start:
+    post:
+      operationId: startSession
+      tags: [sessions]
+      summary: Start a passing session (solo or team)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/StartSessionBody" }
+      responses:
+        "200":
+          description: Session started
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Session" }
+
+  /sessions/mine:
+    get:
+      operationId: listMySessions
+      tags: [sessions]
+      responses:
+        "200":
+          description: Current user sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Session" }
+
+  /sessions/{id}:
+    get:
+      operationId: getSession
+      tags: [sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Session detail with checkpoints + answers
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SessionDetail" }
+    delete:
+      operationId: deleteSession
+      summary: Delete a play session (owner only)
+      tags: [sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ok]
+                properties:
+                  ok: { type: boolean }
+
+  /sessions/{id}/answer:
+    post:
+      operationId: submitAnswer
+      tags: [sessions]
+      summary: Submit answer for current checkpoint
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SubmitAnswerBody" }
+      responses:
+        "200":
+          description: Result
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AnswerResult" }
+
+  /sessions/{id}/abandon:
+    post:
+      operationId: abandonSession
+      tags: [sessions]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Updated session
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Session" }
+
+  # ---------- LEADERBOARD ----------
+  /leaderboard/teams:
+    get:
+      operationId: leaderboardTeams
+      tags: [leaderboard]
+      parameters:
+        - in: query
+          name: period
+          schema: { type: string, enum: [all, month, week] }
+      responses:
+        "200":
+          description: Teams ranking
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/LeaderboardEntry" }
+
+  /leaderboard/users:
+    get:
+      operationId: leaderboardUsers
+      tags: [leaderboard]
+      parameters:
+        - in: query
+          name: period
+          schema: { type: string, enum: [all, month, week] }
+      responses:
+        "200":
+          description: Users ranking
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/UserLeaderboardEntry" }
+
+  # ---------- MODERATION ----------
+  /moderation/queue:
+    get:
+      operationId: moderationQueue
+      tags: [moderation]
+      responses:
+        "200":
+          description: Quests pending moderation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Quest" }
+  /moderation/quests/{id}/approve:
+    post:
+      operationId: approveQuest
+      tags: [moderation]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Approved
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Quest" }
+  /moderation/quests/{id}/reject:
+    post:
+      operationId: rejectQuest
+      tags: [moderation]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/RejectQuestBody" }
+      responses:
+        "200":
+          description: Rejected
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Quest" }
+
+  # ---------- STATS / HOME ----------
+  /stats/overview:
+    get:
+      operationId: statsOverview
+      tags: [stats]
+      summary: Aggregated home stats
+      responses:
+        "200":
+          description: Overview
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/StatsOverview" }
+
+  /quests/featured:
+    get:
+      operationId: featuredQuests
+      tags: [quests]
+      summary: Featured / trending quests
+      responses:
+        "200":
+          description: Featured list
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Quest" }
+
+  /activity/recent:
+    get:
+      operationId: recentActivity
+      tags: [stats]
+      summary: Recent platform activity
+      responses:
+        "200":
+          description: Recent activity feed
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/ActivityItem" }
+
+  /achievements/mine:
+    get:
+      operationId: myAchievements
+      tags: [stats]
+      responses:
+        "200":
+          description: Achievements of current user
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Achievement" }
+
+  # ---------- PROFILE ----------
+  /profile:
+    patch:
+      operationId: updateProfile
+      tags: [profile]
+      summary: Update own profile (bio, banner, theme, avatars, city)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UpdateProfileBody" }
+      responses:
+        "200":
+          description: Updated user
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/User" }
+
+  /profile/{userId}:
+    get:
+      operationId: getPublicProfile
+      tags: [profile]
+      summary: Get public profile of any user with stats
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Public profile
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicProfile" }
+
+  /profile/me/timeline:
+    get:
+      operationId: myTimeline
+      tags: [profile]
+      summary: Last 7 days activity for charts
+      responses:
+        "200":
+          description: Daily activity points for last 7 days
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/TimelinePoint" }
+
+  # ---------- ADMIN ----------
+  /admin/overview:
+    get:
+      operationId: adminOverview
+      tags: [admin]
+      summary: Admin dashboard aggregated metrics
+      responses:
+        "200":
+          description: Admin overview
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AdminOverview" }
+
+  /admin/users:
+    get:
+      operationId: adminListUsers
+      tags: [admin]
+      parameters:
+        - in: query
+          name: search
+          schema: { type: string }
+      responses:
+        "200":
+          description: User list
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/AdminUserRow" }
+
+  /admin/users/{id}/role:
+    post:
+      operationId: adminSetRole
+      tags: [admin]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SetRoleBody" }
+      responses:
+        "200":
+          description: Updated user
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/User" }
+
+  # ---------- CHAT ----------
+  /chat/channels:
+    get:
+      operationId: listChatChannels
+      tags: [chat]
+      summary: My chat channels
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/ChatChannel" }
+    post:
+      operationId: createChatChannel
+      tags: [chat]
+      summary: Create or get a chat channel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreateChannelBody" }
+      responses:
+        "200":
+          description: Channel
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ChatChannel" }
+  /chat/channels/{id}:
+    get:
+      operationId: getChatChannel
+      tags: [chat]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Channel
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ChatChannel" }
+  /chat/channels/{id}/join:
+    post:
+      operationId: joinChatChannel
+      tags: [chat]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Channel
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ChatChannel" }
+  /chat/channels/{id}/leave:
+    post:
+      operationId: leaveChatChannel
+      tags: [chat]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/OkResponse" }
+  /chat/channels/{id}/messages:
+    get:
+      operationId: listChatMessages
+      tags: [chat]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+        - in: query
+          name: limit
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/ChatMessage" }
+    post:
+      operationId: sendChatMessage
+      tags: [chat]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SendMessageBody" }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ChatMessage" }
+  /chat/channels/{id}/read:
+    post:
+      operationId: markChatRead
+      tags: [chat]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/OkResponse" }
+  /chat/users/search:
+    get:
+      operationId: searchChatUsers
+      tags: [chat]
+      parameters:
+        - in: query
+          name: q
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/ChatUser" }
+
+  # ---------- AI ----------
+  /ai/validate-quest:
+    post:
+      operationId: aiValidateQuest
+      tags: [ai]
+      summary: AI-style validation report for a quest before submission
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AiValidateQuestBody" }
+      responses:
+        "200":
+          description: AI verdict
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AiVerdict" }
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string }
+
+    OkResponse:
+      type: object
+      required: [ok]
+      properties:
+        ok: { type: boolean }
+
+    # ---------- AUTH ----------
+    RegisterBody:
+      type: object
+      required: [email, password, nickname, ageGroup]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string, minLength: 6 }
+        nickname: { type: string, minLength: 2, maxLength: 32 }
+        ageGroup:
+          type: string
+          enum: [age_14_15, age_16_17]
+
+    LoginBody:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string }
+        password: { type: string }
+
+    AuthResponse:
+      type: object
+      required: [user]
+      properties:
+        user: { $ref: "#/components/schemas/User" }
+
+    MeResponse:
+      type: object
+      properties:
+        user:
+          oneOf:
+            - { $ref: "#/components/schemas/User" }
+            - { type: "null" }
+
+    User:
+      type: object
+      required: [id, email, nickname, ageGroup, role, points, createdAt, theme, avatarSlots, activeAvatarSlot]
+      properties:
+        id: { type: integer }
+        email: { type: string }
+        nickname: { type: string }
+        ageGroup: { type: string, enum: [age_14_15, age_16_17] }
+        role: { type: string, enum: [player, moderator] }
+        points: { type: integer }
+        completedCount: { type: integer }
+        bio: { type: string }
+        bannerUrl: { type: string }
+        city: { type: string }
+        theme: { type: string, enum: [neon, sunset, mono] }
+        avatarSlots:
+          type: array
+          items: { $ref: "#/components/schemas/AvatarSlot" }
+        activeAvatarSlot: { type: integer }
+        createdAt: { type: string, format: date-time }
+
+    AvatarSlot:
+      type: object
+      required: [style, seed]
+      properties:
+        style: { type: string }
+        seed: { type: string }
+
+    UpdateProfileBody:
+      type: object
+      properties:
+        bio: { type: string, maxLength: 280 }
+        bannerUrl: { type: string }
+        city: { type: string, maxLength: 64 }
+        theme: { type: string, enum: [neon, sunset, mono] }
+        avatarSlots:
+          type: array
+          maxItems: 3
+          items: { $ref: "#/components/schemas/AvatarSlot" }
+        activeAvatarSlot: { type: integer, minimum: 0, maximum: 2 }
+
+    PublicProfile:
+      type: object
+      required: [user, achievements, recentSessions]
+      properties:
+        user: { $ref: "#/components/schemas/User" }
+        achievements:
+          type: array
+          items: { $ref: "#/components/schemas/Achievement" }
+        recentSessions:
+          type: array
+          items: { $ref: "#/components/schemas/Session" }
+        rank: { type: integer }
+        questsCreated: { type: integer }
+
+    TimelinePoint:
+      type: object
+      required: [date, points, sessions]
+      properties:
+        date: { type: string }
+        points: { type: integer }
+        sessions: { type: integer }
+
+    AdminOverview:
+      type: object
+      required: [users, players, moderators, quests, published, moderation, sessions, activeSessions, completions, signupsLast7d]
+      properties:
+        users: { type: integer }
+        players: { type: integer }
+        moderators: { type: integer }
+        quests: { type: integer }
+        published: { type: integer }
+        moderation: { type: integer }
+        sessions: { type: integer }
+        activeSessions: { type: integer }
+        completions: { type: integer }
+        signupsLast7d:
+          type: array
+          items:
+            type: object
+            required: [date, count]
+            properties:
+              date: { type: string }
+              count: { type: integer }
+        topAuthors:
+          type: array
+          items:
+            type: object
+            required: [userId, nickname, questCount]
+            properties:
+              userId: { type: integer }
+              nickname: { type: string }
+              questCount: { type: integer }
+
+    AdminUserRow:
+      type: object
+      required: [id, email, nickname, role, points, completedCount, createdAt]
+      properties:
+        id: { type: integer }
+        email: { type: string }
+        nickname: { type: string }
+        role: { type: string, enum: [player, moderator] }
+        points: { type: integer }
+        completedCount: { type: integer }
+        questCount: { type: integer }
+        city: { type: string, nullable: true }
+        avatarSlots:
+          type: array
+          items:
+            type: object
+            required: [seed, style]
+            properties:
+              seed: { type: string }
+              style: { type: string }
+        activeAvatarSlot: { type: integer }
+        createdAt: { type: string, format: date-time }
+
+    SetRoleBody:
+      type: object
+      required: [role]
+      properties:
+        role: { type: string, enum: [player, moderator] }
+
+    AiValidateQuestBody:
+      type: object
+      required: [title, description]
+      properties:
+        title: { type: string }
+        description: { type: string }
+        rules: { type: string }
+        difficulty: { type: integer }
+        durationMin: { type: integer }
+        checkpoints:
+          type: array
+          items:
+            type: object
+            properties:
+              name: { type: string }
+              task: { type: string }
+              hint: { type: string }
+
+    AiVerdict:
+      type: object
+      required: [score, status, summary, issues, suggestions]
+      properties:
+        score: { type: integer, minimum: 0, maximum: 100 }
+        status: { type: string, enum: [approved, needs_work, rejected] }
+        summary: { type: string }
+        issues:
+          type: array
+          items:
+            type: object
+            required: [severity, field, message]
+            properties:
+              severity: { type: string, enum: [info, warning, error] }
+              field: { type: string }
+              message: { type: string }
+        suggestions:
+          type: array
+          items: { type: string }
+
+    # ---------- QUESTS ----------
+    Quest:
+      type: object
+      required: [id, title, description, city, district, difficulty, durationMin, status, authorId, createdAt]
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        description: { type: string }
+        city: { type: string }
+        district: { type: string }
+        coverUrl: { type: string }
+        difficulty: { type: integer, minimum: 1, maximum: 5 }
+        durationMin: { type: integer }
+        rules: { type: string }
+        status:
+          type: string
+          enum: [draft, moderation, published, archived, rejected]
+        rejectionReason: { type: string }
+        authorId: { type: integer }
+        authorNickname: { type: string }
+        checkpointCount: { type: integer }
+        completionCount: { type: integer }
+        avgRating: { type: number }
+        createdAt: { type: string, format: date-time }
+        publishedAt: { type: string, format: date-time }
+        bestTravelMode:
+          type: string
+          enum: [foot, transport, public_transport, dirt_road, off_road]
+
+    QuestDetail:
+      type: object
+      required: [quest, checkpoints]
+      properties:
+        quest: { $ref: "#/components/schemas/Quest" }
+        checkpoints:
+          type: array
+          items: { $ref: "#/components/schemas/Checkpoint" }
+
+    QuestListResponse:
+      type: object
+      required: [items, total, page, pageSize]
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/Quest" }
+        total: { type: integer }
+        page: { type: integer }
+        pageSize: { type: integer }
+
+    QuestRunEntry:
+      type: object
+      required: [sessionId, nickname, score, finishedAt]
+      properties:
+        sessionId: { type: integer }
+        nickname: { type: string }
+        score: { type: integer }
+        timeTakenSeconds: { type: integer }
+        finishedAt: { type: string, format: date-time }
+
+    QuestSessionsStats:
+      type: object
+      required: [totalCompleted, avgScore, recentRuns]
+      properties:
+        totalCompleted: { type: integer }
+        avgScore: { type: number }
+        recentRuns:
+          type: array
+          items: { $ref: "#/components/schemas/QuestRunEntry" }
+
+    CreateQuestBody:
+      type: object
+      required: [title, description, city, district, difficulty, durationMin]
+      properties:
+        title: { type: string, minLength: 5 }
+        description: { type: string, minLength: 30 }
+        city: { type: string }
+        district: { type: string }
+        coverUrl: { type: string }
+        difficulty: { type: integer, minimum: 1, maximum: 5 }
+        durationMin: { type: integer, minimum: 5 }
+        rules: { type: string }
+        bestTravelMode:
+          type: string
+          enum: [foot, transport, public_transport, dirt_road, off_road]
+
+    UpdateQuestBody:
+      type: object
+      properties:
+        title: { type: string }
+        description: { type: string }
+        city: { type: string }
+        district: { type: string }
+        coverUrl: { type: string }
+        difficulty: { type: integer, minimum: 1, maximum: 5 }
+        durationMin: { type: integer, minimum: 5 }
+        rules: { type: string }
+        bestTravelMode:
+          type: string
+          enum: [foot, transport, public_transport, dirt_road, off_road]
+          nullable: true
+
+    # ---------- CHECKPOINTS ----------
+    Checkpoint:
+      type: object
+      required: [id, questId, orderIndex, name, task, taskType, lat, lng]
+      properties:
+        id: { type: integer }
+        questId: { type: integer }
+        orderIndex: { type: integer }
+        name: { type: string }
+        task: { type: string }
+        taskType:
+          type: string
+          enum: [code_word, choice]
+        codeAnswer: { type: string }
+        choiceOptions:
+          type: array
+          items: { type: string }
+        choiceAnswerIndex: { type: integer }
+        hint: { type: string }
+        rules: { type: string }
+        lat: { type: number }
+        lng: { type: number }
+
+    CreateCheckpointBody:
+      type: object
+      required: [name, task, taskType, lat, lng]
+      properties:
+        name: { type: string }
+        task: { type: string, minLength: 20 }
+        taskType: { type: string, enum: [code_word, choice] }
+        codeAnswer: { type: string }
+        choiceOptions:
+          type: array
+          items: { type: string }
+        choiceAnswerIndex: { type: integer }
+        hint: { type: string }
+        rules: { type: string }
+        lat: { type: number }
+        lng: { type: number }
+
+    UpdateCheckpointBody:
+      type: object
+      properties:
+        name: { type: string }
+        task: { type: string }
+        taskType: { type: string, enum: [code_word, choice] }
+        codeAnswer: { type: string }
+        choiceOptions:
+          type: array
+          items: { type: string }
+        choiceAnswerIndex: { type: integer }
+        hint: { type: string }
+        rules: { type: string }
+        lat: { type: number }
+        lng: { type: number }
+        orderIndex: { type: integer }
+
+    # ---------- TEAMS ----------
+    Team:
+      type: object
+      required: [id, name, joinCode, captainId, memberCount, points, createdAt]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        description: { type: string }
+        joinCode: { type: string }
+        captainId: { type: integer }
+        captainNickname: { type: string }
+        memberCount: { type: integer }
+        points: { type: integer }
+        completedCount: { type: integer }
+        createdAt: { type: string, format: date-time }
+
+    TeamMember:
+      type: object
+      required: [id, nickname, role]
+      properties:
+        id: { type: integer }
+        nickname: { type: string }
+        role: { type: string, enum: [captain, member] }
+
+    TeamDetail:
+      type: object
+      required: [team, members]
+      properties:
+        team: { $ref: "#/components/schemas/Team" }
+        members:
+          type: array
+          items: { $ref: "#/components/schemas/TeamMember" }
+
+    CreateTeamBody:
+      type: object
+      required: [name]
+      properties:
+        name: { type: string, minLength: 2 }
+        description: { type: string }
+
+    JoinTeamBody:
+      type: object
+      required: [joinCode]
+      properties:
+        joinCode: { type: string }
+
+    # ---------- SESSIONS ----------
+    Session:
+      type: object
+      required: [id, questId, mode, status, currentIndex, score, startedAt]
+      properties:
+        id: { type: integer }
+        questId: { type: integer }
+        questTitle: { type: string }
+        questCity: { type: string }
+        questDifficulty: { type: integer }
+        teamId: { type: integer }
+        teamName: { type: string }
+        mode: { type: string, enum: [solo, team] }
+        status: { type: string, enum: [started, in_progress, completed, abandoned] }
+        travelMode: { type: string, enum: [foot, transport, public_transport, dirt_road, off_road] }
+        currentIndex: { type: integer }
+        score: { type: integer }
+        startedAt: { type: string, format: date-time }
+        finishedAt: { type: string, format: date-time }
+        scoreBreakdown: { $ref: "#/components/schemas/ScoreBreakdown" }
+
+    SessionAnswer:
+      type: object
+      required: [checkpointId, correct, attemptedAt]
+      properties:
+        checkpointId: { type: integer }
+        answer: { type: string }
+        correct: { type: boolean }
+        attemptedAt: { type: string, format: date-time }
+
+    SessionDetail:
+      type: object
+      required: [session, quest, checkpoints, answers]
+      properties:
+        session: { $ref: "#/components/schemas/Session" }
+        quest: { $ref: "#/components/schemas/Quest" }
+        checkpoints:
+          type: array
+          items: { $ref: "#/components/schemas/Checkpoint" }
+        answers:
+          type: array
+          items: { $ref: "#/components/schemas/SessionAnswer" }
+
+    StartSessionBody:
+      type: object
+      required: [questId, mode]
+      properties:
+        questId: { type: integer }
+        mode: { type: string, enum: [solo, team] }
+        teamId: { type: integer }
+        travelMode: { type: string, enum: [foot, transport, public_transport, dirt_road, off_road] }
+
+    SubmitAnswerBody:
+      type: object
+      properties:
+        codeAnswer: { type: string }
+        choiceIndex: { type: integer }
+
+    ScoreBreakdown:
+      type: object
+      required: [checkpointPoints, completionBonus, speedBonus, elapsedSeconds, difficultyMultiplier, travelMultiplier, subtotal]
+      properties:
+        checkpointPoints: { type: integer }
+        completionBonus: { type: integer }
+        speedBonus: { type: integer }
+        elapsedSeconds: { type: number }
+        difficultyMultiplier: { type: number }
+        travelMultiplier: { type: number }
+        subtotal: { type: integer }
+
+    AnswerResult:
+      type: object
+      required: [correct, completed, currentIndex, score]
+      properties:
+        correct: { type: boolean }
+        completed: { type: boolean }
+        currentIndex: { type: integer }
+        score: { type: integer }
+        message: { type: string }
+        scoreBreakdown: { $ref: "#/components/schemas/ScoreBreakdown" }
+
+    # ---------- LEADERBOARD ----------
+    LeaderboardEntry:
+      type: object
+      required: [rank, teamId, teamName, points, completedCount]
+      properties:
+        rank: { type: integer }
+        teamId: { type: integer }
+        teamName: { type: string }
+        points: { type: integer }
+        completedCount: { type: integer }
+        memberCount: { type: integer }
+
+    UserLeaderboardEntry:
+      type: object
+      required: [rank, userId, nickname, points, completedCount]
+      properties:
+        rank: { type: integer }
+        userId: { type: integer }
+        nickname: { type: string }
+        points: { type: integer }
+        completedCount: { type: integer }
+        city: { type: string }
+        avatarSlots:
+          type: array
+          items: { $ref: "#/components/schemas/AvatarSlot" }
+        activeAvatarSlot: { type: integer }
+
+    # ---------- MODERATION ----------
+    RejectQuestBody:
+      type: object
+      required: [reason]
+      properties:
+        reason: { type: string, minLength: 5 }
+
+    # ---------- STATS ----------
+    StatsOverview:
+      type: object
+      required: [questsTotal, questsPublished, usersTotal, teamsTotal, completionsTotal, citiesTotal]
+      properties:
+        questsTotal: { type: integer }
+        questsPublished: { type: integer }
+        usersTotal: { type: integer }
+        teamsTotal: { type: integer }
+        completionsTotal: { type: integer }
+        citiesTotal: { type: integer }
+        topCity: { type: string }
+        topCityCount: { type: integer }
+
+    ActivityItem:
+      type: object
+      required: [kind, title, occurredAt]
+      properties:
+        kind:
+          type: string
+          enum: [quest_published, session_completed, team_created, user_joined]
+        title: { type: string }
+        subtitle: { type: string }
+        occurredAt: { type: string, format: date-time }
+
+    Achievement:
+      type: object
+      required: [id, code, name, description, earnedAt]
+      properties:
+        id: { type: integer }
+        code: { type: string }
+        name: { type: string }
+        description: { type: string }
+        icon: { type: string }
+        earnedAt: { type: string, format: date-time }
+
+    # ---------- CHAT ----------
+    ChatAttachment:
+      oneOf:
+        - type: object
+          required: [kind, questId]
+          properties:
+            kind: { type: string, enum: [quest_link] }
+            questId: { type: integer }
+        - type: object
+          required: [kind, teamId, joinCode]
+          properties:
+            kind: { type: string, enum: [team_invite] }
+            teamId: { type: integer }
+            joinCode: { type: string }
+
+    ChatMessage:
+      type: object
+      required: [id, channelId, userId, body, createdAt]
+      properties:
+        id: { type: integer }
+        channelId: { type: integer }
+        userId: { type: integer }
+        body: { type: string }
+        attachment:
+          oneOf:
+            - $ref: "#/components/schemas/ChatAttachment"
+            - type: "null"
+        createdAt: { type: string, format: date-time }
+        authorNickname: { type: string }
+        authorAvatarSlot: { type: integer }
+
+    ChatChannelMember:
+      type: object
+      required: [userId, nickname, activeAvatarSlot]
+      properties:
+        userId: { type: integer }
+        nickname: { type: string }
+        activeAvatarSlot: { type: integer }
+
+    ChatChannel:
+      type: object
+      required: [id, kind, title, memberCount, unread, members, createdAt]
+      properties:
+        id: { type: integer }
+        kind: { type: string, enum: [direct, group, quest, team] }
+        title: { type: string }
+        questId: { type: integer }
+        teamId: { type: integer }
+        createdById: { type: integer }
+        memberCount: { type: integer }
+        unread: { type: integer }
+        createdAt: { type: string, format: date-time }
+        members:
+          type: array
+          items: { $ref: "#/components/schemas/ChatChannelMember" }
+        lastMessage:
+          oneOf:
+            - $ref: "#/components/schemas/ChatMessage"
+            - type: "null"
+
+    CreateChannelBody:
+      type: object
+      required: [kind]
+      properties:
+        kind: { type: string, enum: [direct, group, quest, team] }
+        title: { type: string }
+        memberIds:
+          type: array
+          items: { type: integer }
+        questId: { type: integer }
+        teamId: { type: integer }
+
+    SendMessageBody:
+      type: object
+      properties:
+        body: { type: string }
+        attachment:
+          oneOf:
+            - $ref: "#/components/schemas/ChatAttachment"
+            - type: "null"
+
+    ChatUser:
+      type: object
+      required: [id, nickname, activeAvatarSlot]
+      properties:
+        id: { type: integer }
+        nickname: { type: string }
+        activeAvatarSlot: { type: integer }
+        city: { type: string }

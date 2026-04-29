@@ -1,0 +1,31 @@
+VERDICT: APPROVED
+The changes correctly implement the profile wall privacy fix and preserve core authorization behavior.
+
+Critical findings / analysis:
+- **Compose visibility is now correctly restricted**: `ProfileWall` renders the post composer onVERDICT: APPROVED
+ly when `currentUserId === userId`, so users no longer see a post form on other users’ profiles.
+- The changes correctly implement the profile wall privacy fix and preserve core authorization behavior.
+**Prop threading is correctly updated**: both own profile (`page
+s/profile/index.tsx`) and public profile (`pages/profCritical findings / analysis:
+ile/public.tsx`) now pass `isModerator` into `ProfileWall`,- **Compose visibility is now correctly restricted**: `ProfileWall` renders the post composer only when `currentUserId === userId`, so users no longer see a post form on other users’ profiles.
+ enabling consistent permission-aware UI behavior.
+- **Delete guard is aligned with backend rules**: `PostCard` now uses `currentUserId === post.author.id || isModerator` for post delete and `currentUserId === c.userId || isModerator` for comment delete. This removes prior wall-owner-based UI permission logic and matches server-side enforcement (`routes/wall.ts`) that allows only author or moderator.
+- **Feed requirement check**: no feed changes were included, but current `pages/wall/feed.tsx` already has no new-post composer, satisfying the “no new post entry point” requirement.
+
+Security:
+- None observed (no serious authz regression; client-side permission display now better matches server-side authorization).
+
+Next actions:
+1. Run a quick manual verification matrix: own profile, another user profile, and moderator-on-public-profile to confirm composer/delete visibility.
+2. Add/adjust a UI test for `ProfileWall` composer visibility (`currentUserId === userId`) to prevent regressions.
+3. (Optional) Add a UI test for delete-icon visibility by role (author vs non-author vs moderator).- **Prop threading is correctly updated**: both own profile (`pages/profile/index.tsx`) and public profile (`pages/profile/public.tsx`) now pass `isModerator` into `ProfileWall`, enabling consistent permission-aware UI behavior.
+- **Delete guard is aligned with backend rules**: `PostCard` now uses `currentUserId === post.author.id || isModerator` for post delete and `currentUserId === c.userId || isModerator` for comment delete. This removes prior wall-owner-based UI permission logic and matches server-side enforcement (`routes/wall.ts`) that allows only author or moderator.
+- **Feed requirement check**: no feed changes were included, but current `pages/wall/feed.tsx` already has no new-post composer, satisfying the “no new post entry point” requirement.
+
+Security:
+- None observed (no serious authz regression; client-side permission display now better matches server-side authorization).
+
+Next actions:
+1. Run a quick manual verification matrix: own profile, another user profile, and moderator-on-public-profile to confirm composer/delete visibility.
+2. Add/adjust a UI test for `ProfileWall` composer visibility (`currentUserId === userId`) to prevent regressions.
+3. (Optional) Add a UI test for delete-icon visibility by role (author vs non-author vs moderator).

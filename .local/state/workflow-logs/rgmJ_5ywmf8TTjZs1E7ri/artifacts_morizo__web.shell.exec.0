@@ -1,0 +1,1012 @@
+
+> @workspace/morizo@0.0.0 dev /home/runner/workspace/artifacts/morizo
+> vite --config vite.config.ts --host 0.0.0.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J
+  [32m[1mVITE[22m v7.3.2[39m  [2mready in [0m[1m372[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m23989[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://172.31.106.66:[1m23989[22m/[39m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+[seed] Уже есть пользователи — пропускаем сидирование
+[23:35:14.551] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 1,
+      "method": "GET",
+      "url": "/api/auth/me",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"256-iDFVje0zR48QioRmPZH0IS9dyHs\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f144320000000022d53d0305fa7f2b-00594cf3035a1025-00",
+        "tracestate": "dd=s:0;p:00594cf3035a1025;t.tid:69f1443200000000",
+        "x-datadog-parent-id": "25135879544246309",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f1443200000000",
+        "x-datadog-trace-id": "2509979450523418411",
+        "x-forwarded-for": "45.85.105.118, 10.84.0.64, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 39242
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"256-iDFVje0zR48QioRmPZH0IS9dyHs\""
+      }
+    }
+    responseTime: 9
+[23:35:14.557] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 3,
+      "method": "GET",
+      "url": "/api/leaderboard/users",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"9b2-HF4k7XCPHc1eRfV5dZKhuvvlWcU\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f1443200000000584547d26bcf82f7-366a3e4132c7343f-00",
+        "tracestate": "dd=s:0;p:366a3e4132c7343f;t.tid:69f1443200000000",
+        "x-datadog-parent-id": "3921014875325150271",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f1443200000000",
+        "x-datadog-trace-id": "6360569017808159479",
+        "x-forwarded-for": "45.85.105.118, 10.84.5.22, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 39298
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"9b2-HF4k7XCPHc1eRfV5dZKhuvvlWcU\""
+      }
+    }
+    responseTime: 5
+[23:35:14.570] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 2,
+      "method": "GET",
+      "url": "/api/quests/featured",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"f1b-X4PJgGo/2QOeb+lUnA+g+nrriHA\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f14432000000006ea7bcc3a0b97f53-78b30b5f7e68cc00-00",
+        "tracestate": "dd=s:0;p:78b30b5f7e68cc00;t.tid:69f1443200000000",
+        "x-datadog-parent-id": "8697307810153155584",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f1443200000000",
+        "x-datadog-trace-id": "7973549213683908435",
+        "x-forwarded-for": "45.85.105.118, 10.84.10.142, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 39278
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"f1b-X4PJgGo/2QOeb+lUnA+g+nrriHA\""
+      }
+    }
+    responseTime: 24
+[23:35:14.587] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 4,
+      "method": "GET",
+      "url": "/api/stats/overview",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"a6-Oc0wa5ZwWi4d1s1nPx8za5hhKgQ\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f144320000000054156994769c31b7-35788fe330a2f4a3-00",
+        "tracestate": "dd=s:0;p:35788fe330a2f4a3;t.tid:69f1443200000000",
+        "x-datadog-parent-id": "3852987687151793315",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f1443200000000",
+        "x-datadog-trace-id": "6058864960062894519",
+        "x-forwarded-for": "45.85.105.118, 10.84.10.142, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 39314
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"a6-Oc0wa5ZwWi4d1s1nPx8za5hhKgQ\""
+      }
+    }
+    responseTime: 34
+[23:35:14.838] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 5,
+      "method": "GET",
+      "url": "/api/chat/channels",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f144320000000067f01481da8767c4-12234f2c1bf3b225-00",
+        "tracestate": "dd=s:0;p:12234f2c1bf3b225;t.tid:69f1443200000000",
+        "x-datadog-parent-id": "1306975367733686821",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f1443200000000",
+        "x-datadog-trace-id": "7489508728266778564",
+        "x-forwarded-for": "45.85.105.118, 10.84.10.142, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 39298
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\""
+      }
+    }
+    responseTime: 9
+[23:35:20.979] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 6,
+      "method": "GET",
+      "url": "/api/auth/me",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "localhost",
+        "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "en-US,en;q=0.9",
+        "referer": "http://localhost/search",
+        "sec-ch-ua": "\"Not=A?Brand\";v=\"24\", \"Chromium\";v=\"140\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Linux\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "x-forwarded-for": "127.0.0.1"
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 50962
+    }
+    res: {
+      "statusCode": 200,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "13",
+        "etag": "W/\"d-O3i+ap2cff5bxhPRN8PyzcjObvA\""
+      }
+    }
+    responseTime: 1
+[23:35:25.103] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 7,
+      "method": "GET",
+      "url": "/api/chat/channels",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f1443d00000000553ef1dccf12fdcd-435dbdec622a476d-00",
+        "tracestate": "dd=s:0;p:435dbdec622a476d;t.tid:69f1443d00000000",
+        "x-datadog-parent-id": "4854244796332132205",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f1443d00000000",
+        "x-datadog-trace-id": "6142612872449162701",
+        "x-forwarded-for": "45.85.105.118, 10.84.10.142, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 50962
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\""
+      }
+    }
+    responseTime: 17
+[23:35:35.373] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 8,
+      "method": "GET",
+      "url": "/api/chat/channels",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f144470000000014e5a15dcdec2a29-66bc411504918bc9-00",
+        "tracestate": "dd=s:0;p:66bc411504918bc9;t.tid:69f1444700000000",
+        "x-datadog-parent-id": "7402863446017018825",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f1444700000000",
+        "x-datadog-trace-id": "1505787074684135977",
+        "x-forwarded-for": "45.85.105.118, 10.84.10.142, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 43346
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\""
+      }
+    }
+    responseTime: 19
+[23:35:45.640] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 9,
+      "method": "GET",
+      "url": "/api/chat/channels",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f14451000000001252da1ab7e4f3ab-4f4f30231d66662d-00",
+        "tracestate": "dd=s:0;p:4f4f30231d66662d;t.tid:69f1445100000000",
+        "x-datadog-parent-id": "5714839379531687469",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f1445100000000",
+        "x-datadog-trace-id": "1320357449062216619",
+        "x-forwarded-for": "45.85.105.118, 10.84.10.142, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 39476
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\""
+      }
+    }
+    responseTime: 17
+[23:35:55.928] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 10,
+      "method": "GET",
+      "url": "/api/chat/channels",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f1445b0000000004376816da23993b-298d2ea99db186b0-00",
+        "tracestate": "dd=s:0;p:298d2ea99db186b0;t.tid:69f1445b00000000",
+        "x-datadog-parent-id": "2994100633301255856",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f1445b00000000",
+        "x-datadog-trace-id": "303825947229133115",
+        "x-forwarded-for": "45.85.105.118, 10.84.10.142, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 38150
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\""
+      }
+    }
+    responseTime: 16
+[23:36:06.193] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 11,
+      "method": "GET",
+      "url": "/api/chat/channels",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f144660000000052d8b95d9f837f7b-4c07359e413119a3-00",
+        "tracestate": "dd=s:0;p:4c07359e413119a3;t.tid:69f1446600000000",
+        "x-datadog-parent-id": "5478406425534339491",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f1446600000000",
+        "x-datadog-trace-id": "5969725117838884731",
+        "x-forwarded-for": "45.85.105.118, 10.84.10.142, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 38330
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\""
+      }
+    }
+    responseTime: 17
+[23:36:16.449] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 12,
+      "method": "GET",
+      "url": "/api/chat/channels",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f14470000000003d829c174dd19ab6-753f36a3fe423142-00",
+        "tracestate": "dd=s:0;p:753f36a3fe423142;t.tid:69f1447000000000",
+        "x-datadog-parent-id": "8448531503943659842",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f1447000000000",
+        "x-datadog-trace-id": "4432276607189752502",
+        "x-forwarded-for": "45.85.105.118, 10.84.10.142, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 51442
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\""
+      }
+    }
+    responseTime: 17
+[23:36:26.720] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 13,
+      "method": "GET",
+      "url": "/api/chat/channels",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f1447a000000002adf124c7acdefb1-66f7728b32eed475-00",
+        "tracestate": "dd=s:0;p:66f7728b32eed475;t.tid:69f1447a00000000",
+        "x-datadog-parent-id": "7419524853296714869",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f1447a00000000",
+        "x-datadog-trace-id": "3089207989086580657",
+        "x-forwarded-for": "45.85.105.118, 10.84.10.142, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 44256
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\""
+      }
+    }
+    responseTime: 17
+[23:36:37.257] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 14,
+      "method": "GET",
+      "url": "/api/chat/channels",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f1448500000000611abb2a7f6969f8-14d7c10bfd40c76b-00",
+        "tracestate": "dd=s:0;p:14d7c10bfd40c76b;t.tid:69f1448500000000",
+        "x-datadog-parent-id": "1501881257989031787",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f1448500000000",
+        "x-datadog-trace-id": "6997110762274122232",
+        "x-forwarded-for": "45.85.105.118, 10.84.10.142, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 40262
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\""
+      }
+    }
+    responseTime: 16
+[23:36:47.564] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 15,
+      "method": "GET",
+      "url": "/api/chat/channels",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f1448f000000004ceda9aa2a7b655e-433cc0de1acc9c4e-00",
+        "tracestate": "dd=s:0;p:433cc0de1acc9c4e;t.tid:69f1448f00000000",
+        "x-datadog-parent-id": "4844959359308700750",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f1448f00000000",
+        "x-datadog-trace-id": "5543273264685213022",
+        "x-forwarded-for": "45.85.105.118, 10.84.10.142, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 36424
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\""
+      }
+    }
+    responseTime: 15
+[23:36:57.829] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 16,
+      "method": "GET",
+      "url": "/api/chat/channels",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f144990000000063c4898b1737f529-213d052a84b3ca17-00",
+        "tracestate": "dd=s:0;p:213d052a84b3ca17;t.tid:69f1449900000000",
+        "x-datadog-parent-id": "2395076257004112407",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f1449900000000",
+        "x-datadog-trace-id": "7189022135673156905",
+        "x-forwarded-for": "45.85.105.118, 10.84.10.142, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 58938
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\""
+      }
+    }
+    responseTime: 17
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[1;1H[0J[2m11:37:04 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/quests/catalog.tsx, /src/index.css[22m
+[23:37:08.095] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 17,
+      "method": "GET",
+      "url": "/api/chat/channels",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev/",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "sec-fetch-storage-access": "active",
+        "traceparent": "00-69f144a4000000001e445158d9006616-4f9a0983d6e15e81-00",
+        "tracestate": "dd=s:0;p:4f9a0983d6e15e81;t.tid:69f144a400000000",
+        "x-datadog-parent-id": "5735907537260207745",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f144a400000000",
+        "x-datadog-trace-id": "2180957561593816598",
+        "x-forwarded-for": "45.85.105.118, 10.84.0.64, 127.0.0.1",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "127.0.0.1",
+      "remotePort": 58944
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\""
+      }
+    }
+    responseTime: 21
+[23:37:08.463] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 18,
+      "method": "GET",
+      "url": "/api/chat/channels",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev:3000/games",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "traceparent": "00-69f144a4000000001efce17cf22c17f7-7c638fe73e5b94ad-00",
+        "tracestate": "dd=s:0;p:7c638fe73e5b94ad;t.tid:69f144a400000000",
+        "x-datadog-parent-id": "8963165906743825581",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f144a400000000",
+        "x-datadog-trace-id": "2232907442024093687",
+        "x-forwarded-for": "45.85.105.118, 10.84.10.142",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "172.31.106.66",
+      "remotePort": 37092
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"22d-oaC3vQ9sBtCL8KTDuYpnn6ZvsKs\""
+      }
+    }
+    responseTime: 11
+[23:37:08.470] [32mINFO[39m (6903): [36mrequest completed[39m
+    req: {
+      "id": 19,
+      "method": "GET",
+      "url": "/api/auth/me",
+      "query": {},
+      "params": {},
+      "headers": {
+        "host": "a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": "[Redacted]",
+        "if-none-match": "W/\"256-iDFVje0zR48QioRmPZH0IS9dyHs\"",
+        "referer": "https://a8aed321-83f9-4829-83d4-c7237b82f03a-00-1k9ttlugidaw.pike.replit.dev:3000/games",
+        "sec-ch-ua": "\"Google Chrome\";v=\"147\", \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"147\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": "\"Windows\"",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "traceparent": "00-69f144a4000000001c2825d7b7cb3399-3f2d6a2cd782657d-00",
+        "tracestate": "dd=s:0;p:3f2d6a2cd782657d;t.tid:69f144a400000000",
+        "x-datadog-parent-id": "4552411539168191869",
+        "x-datadog-sampling-priority": "0",
+        "x-datadog-tags": "_dd.p.tid=69f144a400000000",
+        "x-datadog-trace-id": "2028913240562152345",
+        "x-forwarded-for": "45.85.105.118, 10.84.2.191",
+        "x-forwarded-proto": "https",
+        "x-replit-user-bio": "",
+        "x-replit-user-id": "",
+        "x-replit-user-name": "",
+        "x-replit-user-profile-image": "",
+        "x-replit-user-roles": "",
+        "x-replit-user-teams": "",
+        "x-replit-user-url": ""
+      },
+      "remoteAddress": "172.31.106.66",
+      "remotePort": 37102
+    }
+    res: {
+      "statusCode": 304,
+      "headers": {
+        "vary": "Origin",
+        "x-powered-by": "Express",
+        "etag": "W/\"256-iDFVje0zR48QioRmPZH0IS9dyHs\""
+      }
+    }
+    responseTime: 16
+[41m[30m ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL [39m[49m [31m@workspace/morizo@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`[39m
+[31mExit status 143[39m

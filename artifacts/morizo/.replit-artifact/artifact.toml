@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "MORIZO — городские квесты"
+version = "1.0.0"
+id = "artifacts/morizo"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23989
+
+[services.development]
+run = "pnpm --filter @workspace/morizo run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/morizo", "run", "build" ]
+publicDir = "artifacts/morizo/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23989"
+BASE_PATH = "/"

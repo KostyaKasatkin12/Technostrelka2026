@@ -1,0 +1,38 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "qcU0GRsV-pMXxWooAKwlY"
+uri = "file://artifacts/morizo/src/assets/hero-nn.png"
+type = "image"
+title = "Hero background Nizhny Novgorod kremlin"
+
+[[generated]]
+id = "Af5TfoDeWLModzf4XB9uF"
+uri = "file://artifacts/morizo/src/assets/moscow-alleys.png"
+type = "image"
+title = "Moscow back-alleys quest cover"
+
+[[generated]]
+id = "N1wwxJ72bHfjlIJzoUrHb"
+uri = "file://artifacts/morizo/src/assets/volga-embankment.png"
+type = "image"
+title = "Volga embankment quest cover"
+
+[[generated]]
+id = "GmgtqBtVnAT5xrfU7wHWx"
+uri = "file://artifacts/morizo/src/assets/neon-street-art.png"
+type = "image"
+title = "Neon street art quest cover"
+
+[[generated]]
+id = "KmqYaRi2EWl-2kOM7Lqsq"
+uri = "file://artifacts/morizo/src/assets/city-nn.png"
+type = "image"
+title = "City teaser Nizhny Novgorod"
+
+[[generated]]
+id = "ueSdAB916KJ530fNqhyjK"
+uri = "file://artifacts/morizo/src/assets/city-moscow.png"
+type = "image"
+title = "City teaser Moscow"

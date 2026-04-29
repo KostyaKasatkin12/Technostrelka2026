@@ -1,0 +1,202 @@
+Ты — Senior Full‑Stack разработчик. Твоя задача — реализовать веб‑приложение для создания и прохождения городских квестов с нуля (или доработать существующий проект, код которого я предоставлю). Приложение должно строго соответствовать приведённым функциональным и техническим требованиям.
+
+## ТЕХНИЧЕСКИЙ СТЕК
+- Фронтенд: React (желательно Next.js, но можно просто React) + TypeScript, адаптивный mobile‑first дизайн. Карта — Yandex Maps API (react‑yandex‑maps). Взаимодействие с API через REST (axios) или tRPC (на твой выбор).
+- Бэкенд: Node.js + Express (или Fastify) + TypeScript. API должен быть задокументирован (Swagger или tRPC типы).
+- База данных: **PostgreSQL** (с расширением PostGIS для гео‑запросов), ORM — Prisma или TypeORM.
+- Аутентификация: JWT (access + refresh токены), Google OAuth (Passport.js).
+- Чат: Socket.IO.
+- ИИ‑модерация: через OpenAI API (можно временно заглушку).
+- Файлы: загрузка локально (multer) в `/uploads`, статическая раздача.
+- Обработка ошибок: централизованный middleware, кастомные ошибки (400, 401, 403, 404, 500).
+- Валидация: Zod на бэкенде и фронтенде.
+
+## БАЗА ДАННЫХ (PostgreSQL + PostGIS)
+Создай миграции и схемы для следующих таблиц с полными связями, индексами и ограничениями.
+
+### users
+- id (uuid, PK)
+- email (varchar, уникальный, not null)
+- password_hash (varchar, nullable для OAuth)
+- google_id (varchar, уникальный, nullable)
+- display_name (varchar(100), not null)
+- avatar_3d_url (text)
+- points (integer, default 0)
+- role (varchar(20), check: 'user','moderator','superadmin', default 'user')
+- team_id (uuid, FK -> teams.id, nullable)
+- created_at, updated_at
+
+### quests
+- id (uuid, PK)
+- title (varchar(100), not null) -- min 5 символов
+- description (text, not null) -- min 30, max 5000
+- cover_image (varchar(500), not null) -- путь к файлу
+- author_id (uuid, FK -> users.id, not null)
+- status (varchar(20), check: 'draft','moderation','published','archived','rejected', default 'draft')
+- rejection_reason (text)
+- difficulty (varchar(10), check: 'ask_1_2','play_3','pro_4_5', not null)
+- duration_minutes (integer, not null)
+- city (varchar(100), not null)
+- share_slug (varchar(50), уникальный, not null)
+- created_at, updated_at
+- deleted_at (soft delete, nullable)
+Индексы: (status, city, difficulty, created_at DESC), индекс по городу.
+
+### checkpoints
+- id (uuid, PK)
+- quest_id (uuid, FK -> quests.id ON DELETE CASCADE, not null)
+- name (varchar(100), not null)
+- coordinates (geometry(Point,4326) или POINT, not null) -- используй PostGIS geography для расстояний
+- task (text, not null, min 20, max 500)
+- task_type (varchar(20), check: 'secret_word','multiple_choice','photo', not null)
+- secret_word (varchar(100), nullable)
+- options (jsonb, nullable) -- массив вариантов для multiple_choice
+- correct_option_index (integer, nullable)
+- hints (jsonb) -- [{ text: varchar(200), penalty_points: integer }]
+- rules (text, not null, min 10)
+- order_number (integer, not null)
+Индексы: уникальный (quest_id, order_number). GIST индекс на coordinates для поиска по расстоянию.
+
+### teams
+- id (uuid, PK)
+- name (varchar(100), not null)
+- max_members (integer, not null, min 2)
+- leader_id (uuid, FK -> users.id)
+- created_at, updated_at
+
+### sessions (сессии прохождения)
+- id (uuid, PK)
+- quest_id (uuid, FK -> quests.id, not null)
+- team_id (uuid, FK -> teams.id, nullable)
+- user_id (uuid, FK -> users.id, nullable) -- для соло
+- status (varchar(20), check: 'started','in_progress','completed','abandoned', not null)
+- current_checkpoint_order (integer, default 1)
+- start_time (timestamptz, not null)
+- end_time (timestamptz)
+- score (integer, default 0)
+- difficulty_mode (varchar(20), check: 'walk','offroad','no_roads','public_transport','car')
+- mode_multiplier (real, not null)
+
+### session_checkpoint_results
+- id (uuid, PK)
+- session_id (uuid, FK -> sessions.id ON DELETE CASCADE, not null)
+- checkpoint_id (uuid, FK -> checkpoints.id, not null)
+- completed_at (timestamptz, not null)
+- photo_url (varchar(500), nullable)
+
+### achievements
+- id (uuid, PK)
+- name (varchar(200), not null)
+- description (text)
+- condition_json (jsonb) -- условие для проверки
+
+### user_achievements
+- user_id (uuid, FK)
+- achievement_id (uuid, FK)
+- unlocked_at (timestamptz)
+PRIMARY KEY (user_id, achievement_id)
+
+### reports (жалобы)
+- id (uuid, PK)
+- reporter_id (uuid, FK -> users.id, not null)
+- quest_id (uuid, FK -> quests.id, not null)
+- checkpoint_id (uuid, FK -> checkpoints.id, nullable) -- null если жалоба на квест
+- target_type (varchar(10), check: 'quest','checkpoint', not null)
+- reason (text, not null)
+- status (varchar(20), check: 'open','resolved','dismissed', default 'open')
+- created_at
+
+### messages (чат)
+- id (uuid, PK)
+- quest_id (uuid, FK -> quests.id, not null)
+- user_id (uuid, FK -> users.id, not null)
+- text (text, not null)
+- created_at (timestamptz)
+Индекс: (quest_id, created_at) для выборки истории.
+
+### team_scores (рейтинг команд)
+- team_id (uuid, PK, FK -> teams.id)
+- total_points (integer, default 0)
+- completed_quests_count (integer, default 0)
+- updated_at
+
+### notifications
+- id (uuid, PK)
+- user_id (uuid, not null)
+- type (varchar(50), not null)
+- payload (jsonb)
+- read (boolean, default false)
+- created_at
+
+## ФУНКЦИОНАЛЬНЫЕ ТРЕБОВАНИЯ (сохрани все пункты из первоначального списка)
+Все предыдущие пункты остаются в силе. Кратко основные из них:
+
+1. **Регистрация через Google OAuth**: создать юзера или привязать к существующему по email.
+2. **Суперпользователь**: seed‑скрипт (superadmin@…), страница со списком всех пользователей (только просмотр, пагинация 10).
+3. **ИИ‑обработчик при создании квеста**: отправка заголовка, описания и заданий чекпоинтов в OpenAI с промптом «проверь на цензуру и краткость»; результат influence статус (draft -> moderation только если approved).
+4. **Замена карт на Яндекс**: вся работа с картой через Yandex Maps API. Главная карта показывает только первый чекпоинт каждого опубликованного квеста (кластеризация), карта квеста – все чекпоинты с цветами по статусу прохождения.
+5. **3D‑аватар**: интеграция readyplayer.me, магазин предметов за баллы (заглушка – список предметов с ценами).
+6. **Обложка квеста**: загрузка фото, ≤5 МБ, jpg/png/webp, предпросмотр.
+7. **Чекпоинты на карте**: форма создания: координаты (вручную или клик по карте), название, задание, тип (спецслово/множественный выбор/фото), подсказки, правила. Минимум 3 точки.
+8. **Подсказка при вводе города**: автокомплит через Yandex Geocoder или предзагруженный список.
+9. **Кнопка «Поделиться квестом»**: генерация публичной ссылки, Web Share API.
+10. **Динамический чат**: web‑сокеты (Socket.IO), комната на каждый квест `quest_{id}`, история сообщений.
+11. **Рассылка приглашений**: при запуске квеста лидером уведомления участникам (сохранение в БД + email); поддержка запланированного старта.
+12. **Команды**: создание, указание макс. участников, управление составом.
+13. **Валидация полей квеста**: название ≥5, описание ≥30, обложка ≤5МБ, чекпоинтов ≥3. Статусная модель: draft → moderation (после ИИ) → published / rejected (с причиной) / archived.
+14. **Лента квестов**: GET /api/quests?page=&limit=10&difficulty=&radius=5&lat=&lng=&duration=&sortBy=. Фильтры по сложности, длительности, радиусу (поиск по географии через ST_DistanceSphere). Сортировка.
+15. **Сессии прохождения**: создание при старте, открыт только первый чекпоинт; прогресс «2 из 5»; фиксация времени; типы заданий: проверка слова (регистронезависимо), выбор варианта, фото‑подтверждение. Завершение, подсчёт очков (10 за точку + 50 за квест + бонус скорости + множитель режима).
+16. **Рейтинг команд**: TeamScore обновляется после завершения квеста командой. Таблица лидеров.
+17. **Ограничение**: нельзя проходить квест, если в команде есть автор; каждый квест засчитывается один раз для команды/соло.
+18. **Достижения**: условия (1 млн шагов, лесник, горожанин), автоматическая выдача.
+19. **Модератор**: демо‑аккаунт (moderator@… / demo123), панель для одобрения/отклонения квестов, список жалоб с возможностью скрыть квест.
+20. **Жалобы**: пользователи могут пожаловаться на квест или чекпоинт.
+21. **Обработка ошибок**: централизованные 400, 401, 403, 404 с пояснениями.
+
+## АРХИТЕКТУРА API
+Строй REST API (если используешь tRPC, пропиши типы). Примеры основных эндпоинтов:
+- POST /api/auth/google
+- GET /api/quests (пагинация, фильтры)
+- POST /api/quests (создание черновика)
+- PUT /api/quests/:id
+- POST /api/quests/:id/submit-moderation
+- POST /api/quests/:id/start-session (соло/команда)
+- POST /api/sessions/:sessionId/checkpoint/:order/submit
+- GET /api/sessions/active
+- POST /api/reports
+- Админские роуты /api/admin/..., модераторские /api/mod/...
+
+Для геопоиска квестов «рядом» используй запрос вида:
+SELECT * FROM quests q
+JOIN checkpoints c ON c.quest_id = q.id AND c.order_number = 1
+WHERE q.status = 'published' AND ST_DWithin(c.coordinates, ST_MakePoint($lng,$lat)::geography, $radius);
+Индексы: GIST на checkpoints.coordinates.
+
+## ВАЛИДАЦИЯ И БЕЗОПАСНОСТЬ
+- Все входящие данные валидируются через Zod (размеры, строки, форматы файлов).
+- Пароли хешируются bcrypt. JWT-секреты – env.
+- Загрузка файлов: multer с limits{ fileSize: 5*1024*1024 }, fileFilter для изображений.
+- Не отдавать секретные ответы квестов в ответе API для обычных пользователей/игроков.
+
+## ФРОНТЕНД (адаптивный mobile‑first)
+- Использование CSS Modules или Tailwind, адаптивная вёрстка.
+- Карта на всех страницах через react-yandex-maps.
+- Экран прохождения квеста: карта с маркером текущего чекпоинта, область задания (текст/варианты/загрузка фото), прогресс-бар, чат.
+- Компоненты: QuestList, QuestForm (многошаговая с картой), QuestDetail, SessionPlayer, TeamManager, Profile (достижения, аватар), ModeratorPanel, SuperAdmin.
+
+## ЧТО НУЖНО СДЕЛАТЬ (пошагово)
+1. Инициализировать проект (Next.js или React + Express), настроить TypeScript, ESLint.
+2. Подключить PostgreSQL, Prisma/TypeORM, написать миграции для всех таблиц (как в задании) с индексами и PostGIS.
+3. Реализовать модели и базовые CRUD-роуты.
+4. Настроить аутентификацию (JWT + Google OAuth), middleware авторизации.
+5. Интегрировать Яндекс.Карты, реализовать логику отображения маркеров/кластеризации.
+6. Создать формы квеста и чекпоинтов с загрузкой обложки и выбором координат на карте.
+7. Внедрить ИИ‑модерацию при сохранении квеста (OpenAI API).
+8. Реализовать сессии прохождения: механика открытия точек, проверка ответов, подсчёт очков.
+9. Сделать чат (Socket.IO), уведомления, рассылку.
+10. Добавить рейтинг команд и систему достижений.
+11. Панель модератора и суперпользователя.
+12. Обработку ошибок, адаптивный дизайн.
+13. Seed‑скрипт для первоначальных ролей.
+
+Если получишь от меня существующий код, проанализируй его и адаптируй изменения. Начинай с плана изменений в файлах, затем генерируй полный код.

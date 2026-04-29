@@ -1,0 +1,39 @@
+VERDICT: APPROVED_WITH_COMMENTS
+The diff correctly implements the core requested behavior for this task: server-side moderation submission now enforces a minimum of 3 checkpoints (with updated error text), catalog pagination size is reduced from 20 to VERDICT: APPROVED_WITH_COMMENTS
+10 via `PAGE_SIZE`, and the quest editor now supports local-image cover upload (JPG/PNG/WebP, 5 MB check), sets `meta.coverUrl` from `/api/uploads/image`, and shows a live preview/placeholder state.
+
+Critical findings / analysis:
+- **Server correctness:** `POST /quests/:id/submit` guard changed from `< 2` to `< 3`; message now clearly states 3-point minimum. This is the blocking business rule and is now enforced server-side.
+- **Catalog paging:** `PAGE_SIZE = 10` in quests route aligns API output with the UX requirement.
+- **Editor upload flow:** Hidden file input + upload button posts `multipart/form-data` to `/api/uploads/image` with credentials, handles upload state, and updates preview URL in local form state as required.
+- **Checkpoint hint:** Inline warning appears only when `< 3` checkpoints and counts down correctly (2 -> 1 -> hidden at 3+).
+- **Moderator reject reason:** Not part of this diff, but current codebase already has reject-reason capture in moderation UI (`pages/moderation.tsx`), so no blocking gap is introduced by this commit.
+
+Comments (non-blocking):
+1) UX copy differs slightly from spec text (“Загрузить с компьютера” vs “Загрузить обложку с компьютера”). Functionality is correct, but wording may need product sign-off.
+2) Error extraction in upload path uses `json?.message`; if backend ever returns non-JSON, user gets generic fallback. Acceptable today but worth keeping consistent with shared API helpers.
+
+Security: none observed (no new authz bypass, injection sink, or secret exposure in the changed code).
+
+Next actions:
+1) Optionally align upload button text exactly to product copy.
+2) Run manual smoke test: upload valid/oversized/invalid file + submit with 0/1/2/3 checkpoints.
+3) Confirm pagination UI still behaves correctly at page boundaries with new backend page size.The diff correctly implements the core requested behavior for this task: server-side moderation submission now enforces a minimum of 3 checkpoints (with updated error text), catalog pagination size is reduced from 20 to 10 via `PAGE_SIZE`, and the quest editor now supports local-image cover upload (JPG/PNG/WebP, 5 MB check), sets `meta.coverUrl` from `/api/uploads/image`, and shows a live preview/placeholder state.
+
+Critical findings / analysis:
+- **Server correctness:** `POST /quests/:id/submit` guard changed from `< 2` to `< 3`; message now clearly states 3-point minimum. This is the blocking business rule and is now enforced server-side.
+- **Catalog paging:** `PAGE_SIZE = 10` in quests route aligns API output with the UX requirement.
+- **Editor upload flow:** Hidden file input + upload button posts `multipart/form-data` to `/api/uploads/image` with credentials, handles upload state, and updates preview URL in local form state as required.
+- **Checkpoint hint:** Inline warning appears only when `< 3` checkpoints and counts down correctly (2 -> 1 -> hidden at 3+).
+- **Moderator reject reason:** Not part of this diff, but current codebase already has reject-reason capture in moderation UI (`pages/moderation.tsx`), so no blocking gap is introduced by this commit.
+
+Comments (non-blocking):
+1) UX copy differs slightly from spec text (“Загрузить с компьютера” vs “Загрузить обложку с компьютера”). Functionality is correct, but wording may need product sign-off.
+2) Error extraction in upload path uses `json?.message`; if backend ever returns non-JSON, user gets generic fallback. Acceptable today but worth keeping consistent with shared API helpers.
+
+Security: none observed (no new authz bypass, injection sink, or secret exposure in the changed code).
+
+Next actions:
+1) Optionally align upload button text exactly to product copy.
+2) Run manual smoke test: upload valid/oversized/invalid file + submit with 0/1/2/3 checkpoints.
+3) Confirm pagination UI still behaves correctly at page boundaries with new backend page size.

@@ -1,0 +1,10 @@
+Enhance user profiles with new details and themes
+
+Adds new API routes and schema definitions for user profiles, including bio, city, theme, and avatar customization, along with AI quest validation and admin panel functionalities.
+
+Replit-Commit-Author: Agent
+Replit-Commit-Session-Id: f9a33e0a-2722-43af-a2e5-4efec903a786
+Replit-Commit-Checkpoint-Type: full_checkpoint
+Replit-Commit-Event-Id: ac988570-994c-4c82-bd7a-6f580079752d
+Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/558a446b-7d7d-4a7b-8694-db046b9da250/f9a33e0a-2722-43af-a2e5-4efec903a786/hAzsrwi
+Replit-Helium-Checkpoint-Created: true

@@ -1,0 +1,24 @@
+Fix wall posting + add nickname uniqueness + user search feature
+
+Wall posting fix:
+- profile-wall.tsx: replaced empty `catch {}` with proper toast error
+  ("Ошибка сети. Попробуйте ещё раз") so users see feedback on failure
+- profile-wall.tsx: `.catch(() => ({}))` added to `res.json()` in the
+  else-branch so malformed error responses don't throw silently
+
+Nickname uniqueness:
+- lib/db/src/schema/index.ts: added `uniqueIndex("users_nickname_idx").on(t.nickname)`
+  to usersTable — DB migration pushed successfully
+- auth.ts: registration now checks for duplicate nickname before inserting
+  and returns 409 "Этот ник уже занят. Выберите другой"
+
+User search feature:
+- profile.ts: new GET /api/users/search?q= endpoint using drizzle `ilike`
+  for case-insensitive partial match on nickname, returns top 20 results
+  with id, nickname, points, avatarSlots, activeAvatarSlot, city, bio
+- Created artifacts/morizo/src/pages/users/search.tsx — debounced search
+  UI (350ms) with live results, UserAvatar, nickname, points, city badge,
+  links to /u/:id profile pages
+- App.tsx: added Route path="/search" → UserSearchPage
+- layout.tsx: added Search icon + "Поиск" to navItems array (desktop nav
+  + mobile hamburger menu)

@@ -1,0 +1,43 @@
+Objective
+Реализовать TZ пункты 5-12 + новые требования: Яндекс.Карты, загрузка аватара/фона, 3D-человечек с магазином, синхронизированный командный старт с таймером и live-таблицей, тосты ошибок, отчёты, поделиться квестом.
+
+Tasks
+T001: Yandex Maps integration (replace Leaflet)
+Replace quest-map.tsx with Yandex Maps version (script loader + clusterer)
+New home-map.tsx — home page map showing 1st checkpoint of each published quest with clustering
+New picker-map.tsx — interactive map for picking checkpoint coordinates in editor
+Files: src/components/quest-map.tsx, src/components/home-map.tsx, src/components/picker-map.tsx, src/lib/yandex-maps.ts
+T002: File uploads (multer + local storage)
+API: POST /api/uploads/image accepting jpg/png/webp ≤5MB
+Frontend: image-upload.tsx component with preview
+Wire into quest cover, profile avatar (custom), profile banner
+T003: Profile customization (custom avatar + banner)
+DB: add customAvatarUrl, bannerCustom (already has bannerUrl), walletItems (jsonb) to users
+Profile page: upload UI for custom avatar/banner
+T004: 3D human avatar + clothing shop
+Replace abstract Avatar3DEditor with humanoid 3D using simple Three.js mesh (head, body, arms, legs)
+Equipped items affect colors/accessories
+New pages/shop.tsx: list shop items (hat, shirt color, glasses, jacket), prices in points, purchase via API
+API: GET /api/shop/items, POST /api/shop/buy, POST /api/shop/equip
+T005: Synchronized team play with timer + live leaderboard
+DB: add scheduledStartAt, partySize to sessions; add team_session_progress view
+API: POST /api/sessions/schedule for team leader to set start time + invite chat link
+Frontend: lobby page showing countdown, participants joined, live leaderboard during play
+Auto-start at scheduledStartAt for everyone
+T006: Toast notifications everywhere + better error handling
+Audit forms: login, register, quest create/edit, session answer, profile edit
+Add explicit toast.error() on all mutation failures with Russian messages
+API errors return { error, message } structure consistently
+T007: Reports / complaints system
+DB: reports table (questId, checkpointId nullable, userId reporter, reason, status)
+API: POST /api/reports, GET /api/admin/reports
+UI: report button on quest page; admin panel queue
+T008: Share quest via Web Share API
+Add Share button on quest detail with Web Share API + clipboard fallback
+Also "Send to chat" picks a channel and posts quest_link
+T009: Yandex Geocoder city autocomplete
+Component: city-autocomplete.tsx using Yandex suggest API
+Wire into register, profile edit, quest create
+T010: Misc — site dynamic, SSE for sessions
+Use refetchInterval on team session progress and home leaderboard
+Already have SSE for chat
